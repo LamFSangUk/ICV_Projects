@@ -70,8 +70,3 @@ def load_face_images(pathname, subject_name, num_images):
 if __name__ == '__main__':
     num_images = 11
     ambient_img, img_arr, light_dirs = load_face_images('./data/', 'yaleB01', num_images)
-
-    # preprocess the data
-    # substract ambient_image from each image in imarray
-    # make sure no pixel is less than zero
-    # rescale values in imarray to be between 0 and 1
