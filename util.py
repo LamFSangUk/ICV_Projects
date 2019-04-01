@@ -90,6 +90,16 @@ def normal2rgb(normal_map):
     return img
 
 
+def validate_with_specific_light(normal_map, albedo_img, light_dir):
+    img = np.matmul(normal_map, light_dir)
+    img = np.multiply(albedo_img, img)
+
+    img *= 255
+    img[img < 0] = 0
+
+    return img
+
+
 if __name__ == '__main__':
     num_images = 11
     ambient_img, img_arr, light_dirs = load_face_images('./data/', 'yaleB01', num_images)

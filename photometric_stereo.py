@@ -29,20 +29,19 @@ def uncalibrated_photometric_stereo(img_arr):
     print(i.shape)
 
     u, s, vh = np.linalg.svd(i, full_matrices=False)
-    #print(u.shape)
-    print(s)
-    #print(vh.shape)
-    s3 = np.eye(3)
-    s3[0][0] = s[0]
-    s3[1][1] = s[1]
-    s3[2][2] = s[2]
-    print(s3)
+
+    s3 = np.diag(np.sqrt(s[:3]))
+    #s3 = np.eye(3)
+    #s3[0][0] = s[0]
+    #s3[1][1] = s[1]
+    #s3[2][2] = s[2]
 
     b_star = np.matmul(u[:, :3], s3)
     b_star = b_star.reshape(height, width, 3)
-    print(b_star.shape)
 
-    return get_albedo_and_normal(b_star, height, width)
+    light_dirs = vh[:3, :]
+
+    return get_albedo_and_normal(b_star, height, width), light_dirs.T
 
 
 def get_albedo_and_normal(b, height, width):
@@ -51,9 +50,6 @@ def get_albedo_and_normal(b, height, width):
     for i in range(height):
         for j in range(width):
             norm = np.linalg.norm(b[i][j], ord=2)
-
-            # draw an albedo image
-            albedo_image[i][j] = norm
 
             if norm != 0:
                 normal_map[i][j] = b[i][j] / norm
