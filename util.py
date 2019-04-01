@@ -64,7 +64,30 @@ def load_face_images(pathname, subject_name, num_images):
     for i in range(num_images):
         light_dirs[i] = sph2cart(1, angle_list[i][0]*np.pi/180, angle_list[i][1]*np.pi/180)  # radius, azimuth, elevation
 
+    #light_dirs = light_dirs[:, [1, 2, 0]]
+
     return ambient_img, img_arr, light_dirs
+
+
+def crop(img, x, y, width, height):
+    return img[:, y:y+height, x:x+width]
+
+
+def normal2rgb(normal_map):
+    width = normal_map.shape[1]
+    height = normal_map.shape[0]
+
+    img = np.zeros(shape=(height, width, 3), dtype=np.uint8)
+
+    for i in range(height):
+        for j in range(width):
+            rgb = normal_map[i][j] / 2
+            rgb += 0.5
+            rgb *= 255
+
+            img[i][j] = np.uint8(rgb)
+
+    return img
 
 
 if __name__ == '__main__':
