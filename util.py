@@ -64,6 +64,7 @@ def load_face_images(pathname, subject_name, num_images):
     for i in range(num_images):
         light_dirs[i] = sph2cart(1, angle_list[i][0]*np.pi/180, angle_list[i][1]*np.pi/180)  # radius, azimuth, elevation
 
+    #light_dirs = -light_dirs
     #light_dirs = light_dirs[:, [1, 2, 0]]
 
     return ambient_img, img_arr, light_dirs
